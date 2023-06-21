@@ -1,0 +1,202 @@
+// A $( document ).ready() block.
+$(document).ready(function() {
+    
+    /**** Send email from footer newslater*****/
+    var pageUrl = window.location.href;
+    var domainUrl = pageUrl.indexOf("azurewebsites.net") === -1 ? "https://api.maharah.com" : "https://maharah-api-testing.azurewebsites.net";
+    // var domainUrl = pageUrl.indexOf("maharah.com") === -1 ? "https://api.maharah.com" : "https://maharah-api-testing.azurewebsites.net";
+    $(".newsletter-content form").submit(function(e){
+		// sends email to SM@maharah.com
+        e.preventDefault();
+        var email = $('.newsletter-content form input[type=email]').val();
+        if (!email) {
+            return;
+        }
+        $.ajax({ 
+             url   :  domainUrl + "/api/contact/newsletter", // "https://maharah-api-testing.azurewebsites.net/api/contact/newsletter",
+             type  : "post",
+             dataType: "json",
+             contentType: "application/json; charset=utf-8",
+             data  : JSON.stringify({ email: email }), // data to be submitted
+             success: function(response){
+        		 $('.newsletter-content form input[type=email]').val('');
+                 $(".newsletter-content .ajax-loader").css("visibility", "hidden"); // doesn't get hidden in arabic layout
+                 alert("Sent successfully");
+             }
+        });
+        return false;
+     });
+	
+	/**** Send email code for services form all page *****/
+	
+    $(".service-form form").submit(function(e){
+		// sends email to co.sales@maharah.com
+        e.preventDefault();
+        var companyName = $('.service-form form input[name=company-name]').val();
+        var numberOfWorkers = $('.service-form form input[name=required-number]').val();
+        var activity = $('.service-form form input[name=activity]').val();
+        var phone = $('.service-form form input[name=phone]').val();
+        var email = $('.service-form form input[name=your-email]').val();
+        var officePhone = $('.service-form form input[name=office-phone]').val();
+        $.ajax({ 
+             url   :  domainUrl + "/api/contact/essnad", // "https://maharah-api-testing.azurewebsites.net/api/contact/newsletter",
+             type  : "post",
+             dataType: "json",
+             contentType: "application/json; charset=utf-8",
+             data  : JSON.stringify({ 
+                 companyName: companyName, numberOfWorkers: numberOfWorkers, activity: activity, phone: phone, email: email, officePhone: officePhone
+             }), // data to be submitted
+             success: function(response){
+                 $(".service-form form").trigger('reset');
+                 if ($("html").attr("lang") == "ar"){
+                 	alert("تم الإرسال بنجاح");
+                 } else {
+                 	alert("Sent successfully");
+                 }
+             }
+        });
+        return false;
+     });
+	 $(".phone input").blur(function(e){		
+        e.preventDefault();
+		//this.value = this.value.replace(/\D/g,'');
+		 var field=this.value;            
+		 if (!field.match(/^[\-\+]?[\d\,]*\.?[\d]*$/))
+		 {
+			 alert("Enter only Numerics");
+			 this.value = this.value.replace(/\D/g,'');
+			 return false;
+		 }		
+	 });
+	
+	 $(".phonear input").blur(function(e){		
+        e.preventDefault();
+		//this.value = this.value.replace(/\D/g,'');
+		 var field=this.value;            
+		 if (!field.match(/^[\-\+]?[\d\,]*\.?[\d]*$/))
+		 {
+			 alert("أدخل الأعداد فقط");
+			 this.value = this.value.replace(/\D/g,'');
+			 return false;
+		 }		
+	 });
+	
+	
+	
+    /**** Send email code for suggest and complaint form *****/
+	 $(".suggest-complaint-form form").submit(function(e){
+		// sends email to care@maharah.com
+        e.preventDefault();
+        var yourName = $('.suggest-complaint-form form input[name=your-name]').val();
+		//var email = $('.suggest-complaint-form form input[name=your-email]').val();
+		var mobile = $('.suggest-complaint-form form input[name=phone]').val();
+        var message = $('.suggest-complaint-form form textarea[name=message]').val();
+		 
+		 $.ajax({ 
+			 url   :  domainUrl + "/api/contact/care", // "https://maharah-api-testing.azurewebsites.net/api/contact/newsletter",
+			 type  : "post",
+			 dataType: "json",
+			 contentType: "application/json; charset=utf-8",
+			 data  : JSON.stringify({ 
+				 yourName: yourName,   mobile: mobile, message: message
+			 }), // data to be submitted
+			 success: function(response){
+				 $(".suggest-complaint-form form").trigger('reset');
+				 if ($("html").attr("lang") == "ar"){
+					 alert("تم الإرسال بنجاح");
+				 } else {
+					 alert("Sent successfully");
+				 }
+			 }
+		 });
+		 return true;
+		 
+        /*if($('.suggest-complaint-form form input[name=your-name]').val().length == 0){
+			           
+        	return false;
+		}else{
+			
+		}*/
+     });
+	
+	
+  /**** header navbar title code for drop down *****/
+	
+	$('.menu-item.menu-item-has-children').addClass('dropdown-wrapper');
+    $('#menu-item-399 .nav-dropdown-info h2').text('E-services');
+	$('#menu-item-401 .nav-dropdown-info h2').text('Media Center');
+    $('#menu-item-402 .nav-dropdown-info h2').text('Gates');
+	$('#menu-item-2045 .nav-dropdown-info h2').text('Investors');
+	//$('#menu-item-1387 .nav-dropdown-info h2').text('Report Violation');
+    
+    
+    
+	$('.rtl #menu-item-427 .nav-dropdown-info h2').text('الخدمات الإلكترونية');
+	$('.rtl #menu-item-417 .nav-dropdown-info h2').text('عن مهارة');
+	$('.rtl #menu-item-434 .nav-dropdown-info h2').text('المركز الإعلامي');
+    //$('.rtl #menu-item-434 .nav-dropdown-info h2').text('المركز الآعلامي');
+    $('.rtl #menu-item-440 .nav-dropdown-info h2').text('بوابات');
+	$('.rtl #menu-item-2046 .nav-dropdown-info h2').text('علاقات المساهمين');
+	//$('.rtl #menu-item-1386 .nav-dropdown-info h2').text('إبلاغ عن مخالفة');
+    
+    $('.rtl .maharah-main-nav-dropdown .nav-dropdown-info p').text('حلول وخدمات موارد بشرية إبداعية');
+    
+    jQuery('.rtl .newsletter-input').attr("placeholder", "اشترك في القائمة البریدیة");
+    
+    $('#menu-item-590 a').attr("target","_blank");
+	$('#menu-item-591 a').attr("target","_blank");
+    
+    $('#menu-item-594 a').attr("target","_blank");
+	$('#menu-item-596 a').attr("target","_blank");
+	
+
+
+
+	$('.count').each(function () {
+	   var size = $(this).text().split(".")[1] ? $(this).text().split(".")[1].length : 0;
+	   $(this).prop('Counter', 0).animate({
+	      Counter: $(this).text()
+	   }, {
+	      duration: 5000,
+	      step: function (func) {
+	         $(this).text(parseFloat(func).toFixed(size));
+	      }
+	   });
+	});
+
+
+
+function iframeLoaded() {
+      var iFrameID = document.getElementById('iFrameResizer0');
+      if(iFrameID) {
+            // here you can make the height, I delete it first, then I make it again
+            iFrameID.height = "";
+            iFrameID.height = iFrameID.contentWindow.document.body.scrollHeight + "px";
+      }   
+  }
+
+   
+});
+
+$(function () {
+      "use strict";
+      $(".countdown").each(function (){
+          $(this).countdown({
+              countDown_days: "Days",
+              countDown_hours: "Hours",
+              countDown_minutes: "Minutes",
+              countDown_seconds: "Seconds"
+          });
+      });
+  });
+
+$(document).on('click','.national', function(){
+		//alert('national');
+		$('#national').show();
+		$('#nonsaudi').hide();
+	});
+	
+	$(document).on('click','.nonsaudi', function(){
+		$('#national').hide();
+		$('#nonsaudi').show();
+	});

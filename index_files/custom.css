@@ -1,0 +1,3 @@
+.newsletter-content .wpcf7-response-output, .service-form .suggest-complaint-form .wpcf7-response-output {
+    display: none;
+}
